@@ -218,3 +218,28 @@ select student.SId,student.Sname,
 (select GROUP_CONCAT(score) as score from sc where sc.SId=student.SId) as score,
 (select AVG(score) as score from sc where sc.SId=student.SId) as avg_score  
 from student 
+13、 查询各科成绩最高分、最低分和平均分：
+以如下形式显示：课程 ID，课程 name，最高分，最低分，平均分，及格率，中等率，优良率，优秀率
+及格为>=60，中等为：70-80，优良为：80-90，优秀为：>=90
+要求输出课程号和选修人数，查询结果按人数降序排列，若人数相同，按课程号升序排列
+
+14、按各科成绩进行排序，并显示排名， Score 重复时保留名次空缺 
+不会
+
+=====================================================================考查sql中变量的使用
+15、查询学生的总成绩，并进行排名，总分重复时不保留名次空缺
+set @rank=0;
+select dto.*,@rank:=@rank+1 as rank from
+(select sc.SId,SUM(score) from sc GROUP BY sc.SId
+ORDER BY SUM(score) DESC )dto
+
+==========================================================================================考查计算字段为子查询
+16、统计各科成绩各分数段人数：课程编号，课程名称，[100-85]，[85-70]，[70-60]，[60-0] 及所占百分比
+select course.CId,course.Cname,
+(select count(*) from sc where sc.CId = course.CId and sc.score >85 and sc.score<=100)/(select count(*) from sc where sc.CId = course.CId) as '[85-100]',
+(select count(*) from sc where sc.CId = course.CId and sc.score >70 and sc.score<=85)/(select count(*) from sc where sc.CId = course.CId) as '[70-85]',
+(select count(*) from sc where sc.CId = course.CId and sc.score >60 and sc.score<=70)/(select count(*) from sc where sc.CId = course.CId) as '[60-70]',
+(select count(*) from sc where sc.CId = course.CId and sc.score >=0 and sc.score<=60)/(select count(*) from sc where sc.CId = course.CId) as '[0-60]'
+ from course
+ 17、查询各科成绩前三名的记录 
+ 不会
