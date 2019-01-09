@@ -212,3 +212,9 @@ select student.*,dto.score from  student INNER JOIN
 (select * from sc where CId='01' and score<60)dto
 on student.SId=dto.SId
 ORDER BY score DESC
+========================================================考察计算字段子查询与GROUP_CONCAT函数
+12、按平均成绩从高到低显示所有学生的所有课程的成绩以及平均成绩
+select student.SId,student.Sname,
+(select GROUP_CONCAT(score) as score from sc where sc.SId=student.SId) as score,
+(select AVG(score) as score from sc where sc.SId=student.SId) as avg_score  
+from student 
